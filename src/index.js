@@ -5,10 +5,17 @@ import { publicPath } from "ultraviolet-static";
 import { uvPath } from "@titaniumnetwork-dev/ultraviolet";
 import { join } from "node:path";
 import { hostname } from "node:os";
+import checkPass from "./api/verify.js";
 
 const bare = createBareServer("/bare/");
 const app = express();
-
+app.use((req, res, next) => {
+  if (!checkPass(req) && req.path != "/verify.html") {
+    res.sendFile(join(publicPath, "verify.html"));
+  } else {
+    next();
+  }
+})
 // Load our publicPath first and prioritize it over UV.
 app.use(express.static(publicPath));
 // Load vendor files last.
