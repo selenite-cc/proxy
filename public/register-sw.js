@@ -10,6 +10,14 @@ const stockSW = "/purple/sw.js";
 const swAllowedHostnames = ["localhost", "127.0.0.1"];
 
 /**
+ * Wisp server used to fetch proxied pages.
+ * Static hosts like Netlify can't run the Wisp WebSocket server, so point this
+ * at an external one, e.g. "wss://your-wisp-server.example.com/wisp/".
+ * Leave empty to use /wisp/ on the current host (works with `npm start`).
+ */
+const wispServer = "";
+
+/**
  * Global util
  * Used in 404.html and index.html
  */
@@ -29,6 +37,8 @@ async function registerSW() {
   });
 
   // Register the EpoxyClient transport to be used for network requests
-  let wispUrl = (location.protocol === "https:" ? "wss" : "ws") + "://" + location.host + "/wisp/";
+  let wispUrl =
+    wispServer ||
+    (location.protocol === "https:" ? "wss" : "ws") + "://" + location.host + "/wisp/";
   BareMux.SetTransport("EpxMod.EpoxyClient", { wisp: wispUrl });
 }

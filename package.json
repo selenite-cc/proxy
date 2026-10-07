@@ -8,7 +8,8 @@
     "node": ">=16.0.0"
   },
   "scripts": {
-    "start": "node --env-file=.env src/index.js"
+    "start": "node --env-file=.env src/index.js",
+    "build": "node scripts/build-static.js"
   },
   "keywords": [
     "proxy"
